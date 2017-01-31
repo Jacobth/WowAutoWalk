@@ -11,3 +11,6 @@ d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\ob
 d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\bin\Debug\WoWObjMgr.exe
 d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\bin\Debug\WoWObjMgr.pdb
 d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\obj\Debug\WoWObjMgr.exe
+d:\jacobth\Documents\GitHub\WowAutoWalk\WoW-Object-Manager\WoWObjMgr\bin\Debug\WoWObjMgr.exe.config
+d:\jacobth\Documents\GitHub\WowAutoWalk\WoW-Object-Manager\WoWObjMgr\obj\Debug\WoWObjMgr.exe
+d:\jacobth\Documents\GitHub\WowAutoWalk\WoW-Object-Manager\WoWObjMgr\obj\Debug\WoWObjMgr.pdb
