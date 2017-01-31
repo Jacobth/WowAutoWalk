@@ -1,0 +1,2 @@
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\bin\x86\Release\WoWObjMgr.exe.config
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\obj\x86\Release\WoWObjMgr.csprojResolveAssemblyReference.cache

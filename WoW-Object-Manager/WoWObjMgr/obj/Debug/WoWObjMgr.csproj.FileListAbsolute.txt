@@ -1,0 +1,13 @@
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\bin\Debug\WoWObjMgr.dll
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\bin\Debug\WoWObjMgr.pdb
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\bin\Debug\WoWObjMgr.tlb
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\bin\Debug\MemoryReader.dll
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\obj\Debug\WoWObjMgr.dll
+C:\Users\Administrator\Documents\Visual Studio 2008\Projects\WoWObjMgr\WoWObjMgr\obj\Debug\WoWObjMgr.pdb
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\bin\Debug\WoWObjMgr.exe.config
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\obj\Debug\WoWObjMgr.pdb
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\obj\Debug\WoWObjMgr.csprojResolveAssemblyReference.cache
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\bin\Debug\WoWObjMgr.exe
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\bin\Debug\WoWObjMgr.pdb
+d:\jacobth\Documents\Visual Studio 2015\Projects\WoW-Object-Manager\WoWObjMgr\obj\Debug\WoWObjMgr.exe
