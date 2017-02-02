@@ -9,35 +9,28 @@ using System.Threading;
 namespace WoWObjMgr
 {
     class Travel
-    {
-        const UInt32 WM_KEYDOWN = 0x0100;
-        const UInt32 WM_KEYUP = 0x0101;
-
-        const int VK_F5 = 0x74;
-        const int VK_SPACE = 0x20;
-        const int VK_LEFT = 0x25;
-        const int VK_X = 0x58;
-
+    {       
         private ZoneLists zones;
-
-        [DllImport("user32.dll")]
-        static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
         private Container cont;
-        PlayerScan scan;
+        private Keyboard keyboard;
+        private PlayerScan scan;
 
         public Travel()
         {
             zones = new ZoneLists();
             cont = new Container();
+            keyboard = new Keyboard();
             scan = new PlayerScan();
         }
 
         static void Main(string[] args)
         {
-        
+
+            new Mine();
+
             Travel t = new Travel();
-            //t.Capture();
-            t.TravelWalk("", 0);
+           // t.Capture();
+            //t.TravelWalk("", 0);
             //t.TravelFly("Shattrath");
             //t.TravelFly("Dalaran");
 
@@ -53,24 +46,21 @@ namespace WoWObjMgr
 
             scan.Ping();
                   
-            Process[] processList = Process.GetProcessesByName("wow");
-            Process wow = processList[0];
-
-            FixPitch(wow);    
+            FixPitch();    
                 
-            Lift(wow, c.getZ());
+            Lift(c.getZ());
 
-            float Current = MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation, wow);
+            float Current = MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation);
             
             if(Current > Min_Distance)
             {
-                MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation, wow);
+                MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation);
             }
                                                                           
         }
 
         //Calculate the distance between the target and the character
-        private float GetDistance(Point p1, Point p2)
+        public float GetDistance(Point p1, Point p2)
         {
             Point p3 = new Point(p1.getX(), p2.getY());
 
@@ -83,20 +73,37 @@ namespace WoWObjMgr
         }
 
         //Move the target up in the air along the Z-axis
-        private void Lift(Process p, float z)
+        public void Lift(float z)
         {
-            PostMessage(p.MainWindowHandle, WM_KEYDOWN, VK_SPACE, 0);
+            keyboard.KeyDown((int)Keyboard.Keys.VK_SPACE);
 
             while (scan.GetLocalPlayer().ZPos < z)
             {
                 scan.Ping();
             }
 
-            PostMessage(p.MainWindowHandle, WM_KEYUP, VK_SPACE, 0);
+            keyboard.KeyUp((int)Keyboard.Keys.VK_SPACE);
+        }
+
+        //Land on the ground and dismount
+        public void Land(float z)
+        {
+            keyboard.KeyDown((int)Keyboard.Keys.VK_X);
+
+            while (scan.GetLocalPlayer().ZPos > z + 10f)
+            {
+                scan.Ping();
+            }
+
+            keyboard.KeyUp((int)Keyboard.Keys.VK_X);
+
+            keyboard.KeyDown((int)Keyboard.Keys.VK_0);
+            Thread.Sleep(1);
+            keyboard.KeyUp((int)Keyboard.Keys.VK_0);
         }
 
         //Rotate the character to point towards the target
-        private void Rotate(float a, float b, float c, Process p, Point p1, Point p2, float diff)
+        private void Rotate(float a, float b, float c, Point p1, Point p2, float diff)
         {
             a = Math.Abs(a);
             b = Math.Abs(b);
@@ -135,9 +142,9 @@ namespace WoWObjMgr
             while(Math.Abs(rot - rotation) > diff)
             {
                // Console.WriteLine(rotation + " difference: ");
-                PostMessage(p.MainWindowHandle, WM_KEYDOWN, VK_LEFT, 0);
+                keyboard.KeyDown((int)Keyboard.Keys.VK_LEFT);
                 Thread.Sleep(10);
-                PostMessage(p.MainWindowHandle, WM_KEYUP, VK_LEFT, 0);
+                keyboard.KeyUp((int)Keyboard.Keys.VK_LEFT);
 
                 scan.Ping();
                 rot = scan.GetLocalPlayer().Rotation;
@@ -145,15 +152,15 @@ namespace WoWObjMgr
         }
 
         //Adjust the pitch of the character before flying
-        private void FixPitch(Process p)
+        public void FixPitch()
         {
-            PostMessage(p.MainWindowHandle, WM_KEYDOWN, VK_SPACE, 0);
+            keyboard.KeyDown((int)Keyboard.Keys.VK_SPACE);
             Thread.Sleep(1000);
-            PostMessage(p.MainWindowHandle, WM_KEYUP, VK_SPACE, 0);
+            keyboard.KeyUp((int)Keyboard.Keys.VK_SPACE);
 
-            PostMessage(p.MainWindowHandle, WM_KEYDOWN, VK_X, 0);
+            keyboard.KeyDown((int)Keyboard.Keys.VK_X);
             Thread.Sleep(1200);
-            PostMessage(p.MainWindowHandle, WM_KEYUP, VK_X, 0);
+            keyboard.KeyUp((int)Keyboard.Keys.VK_X);
 
             Thread.Sleep(1000); 
         }
@@ -171,7 +178,7 @@ namespace WoWObjMgr
 
         //Move towards given point p
         [STAThread]
-        private float MoveToPoint(Point p, float Max_Distance, float rotate, Process wow)
+        public float MoveToPoint(Point p, float Max_Distance, float rotate)
         {           
 
             scan.Ping();
@@ -191,14 +198,14 @@ namespace WoWObjMgr
             float b = p2.getX() - p3.getX();
             float C = (float)Math.Sqrt((a * a) + (b * b));
 
-            Rotate(a, b, C, wow, p1, p2, rotate);
+            Rotate(a, b, C, p1, p2, rotate);
 
             float distance = GetDistance(p1, p2);
             float init_distance = distance;
             float prev = init_distance;
             //  int count = 1;
 
-            PostMessage(wow.MainWindowHandle, WM_KEYDOWN, VK_F5, 0);
+            keyboard.KeyDown((int)Keyboard.Keys.VK_UP);
 
             while (true)
             {
@@ -216,7 +223,7 @@ namespace WoWObjMgr
 
                 if (prev < distance)
                 {
-                    PostMessage(wow.MainWindowHandle, WM_KEYUP, VK_F5, 0);
+                    keyboard.KeyUp((int)Keyboard.Keys.VK_UP);
                     return distance;
                 }
 
@@ -226,7 +233,7 @@ namespace WoWObjMgr
 
                 if (distance < Max_Distance)
                 {
-                    PostMessage(wow.MainWindowHandle, WM_KEYUP, VK_F5, 0);
+                    keyboard.KeyUp((int)Keyboard.Keys.VK_UP);
                     return distance;
                 }
 
@@ -240,9 +247,6 @@ namespace WoWObjMgr
 
             float rotate = 0.03f;
 
-            Process[] processList = Process.GetProcessesByName("wow");
-            Process wow = processList[0];
-
             int start = MoveToClosestNode();
 
             float Max_Distance = 5f;
@@ -252,6 +256,7 @@ namespace WoWObjMgr
          //   Cities c = cont.getCity(city);
             List<int> path = zones.Dun_Morogh.shortest_path(start, end);
             path.Reverse();
+
             foreach (int i in path)
             {
                 Console.WriteLine(i);
@@ -259,12 +264,9 @@ namespace WoWObjMgr
                 
             Thread.Sleep(500);
 
-
             foreach (int i in path)
             {
-
-                MoveToPoint(zones.Dm[i], Max_Distance, rotate, wow);
-                
+                MoveToPoint(zones.Dm[i], Max_Distance, rotate);              
             }
         }
 
@@ -274,9 +276,6 @@ namespace WoWObjMgr
             float rotate = 0.03f;
             float min_distance = float.MaxValue;
             int index = -1;
-
-            Process[] processList = Process.GetProcessesByName("wow");
-            Process wow = processList[0];
 
             scan.Ping();
 
@@ -299,9 +298,33 @@ namespace WoWObjMgr
             }
 
             Point p = zones.Dm[index];
-            MoveToPoint(p, 5f, rotate, wow);
+            MoveToPoint(p, 5f, rotate);
 
             return index;
+        }
+
+        //Returns the position of your character
+        public Point GetPlayerPosition()
+        {
+            scan.Ping();
+
+            WowObject obj = scan.GetLocalPlayer();
+
+            float x = obj.XPos;
+            float y = obj.YPos;
+
+            Point p = new Point(x, y);
+
+            return p;
+        }
+
+        //Mount you character, set your mount on actionbar with keybind 0
+        public void Mount()
+        {
+            keyboard.KeyDown((int)Keyboard.Keys.VK_0);
+            Thread.Sleep(1);
+            keyboard.KeyUp((int)Keyboard.Keys.VK_0);
+            Thread.Sleep(2000);
         }
     }
 }
