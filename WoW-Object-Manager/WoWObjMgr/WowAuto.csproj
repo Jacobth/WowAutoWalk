@@ -121,7 +121,10 @@
   <ItemGroup>
     <Compile Include="Cities.cs" />
     <Compile Include="Container.cs" />
+    <Compile Include="Getters\GameInfo.cs" />
     <Compile Include="Keyboard.cs" />
+    <Compile Include="MageRotation.cs" />
+    <Compile Include="MainClass.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="OrePositions.cs" />
     <Compile Include="PlayerScan.cs" />

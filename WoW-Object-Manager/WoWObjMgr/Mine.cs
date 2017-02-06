@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using WoWObjMgr.Getters;
 
 namespace WoWObjMgr
 {
@@ -55,9 +56,9 @@ namespace WoWObjMgr
             Thread.Sleep(1);
             keyboard.KeyUp((int)Keyboard.Keys.VK_LBUTTON);
 
-            for (int y = -200; y <= 200; y += 8)
+            for (int y = -200; y <= 200; y += 10)
             {
-                for (int x = -200; x <= 200; x += 8)
+                for (int x = -200; x <= 200; x += 10)
                 {
                     int xTmp = Convert.ToInt16(x);
                     int yTmp = Convert.ToInt16(y);
@@ -76,6 +77,7 @@ namespace WoWObjMgr
         public void gatherOutlandOres()
         {
             Travel t = new Travel();
+            MageRotation m = new MageRotation();
 
             while (pos.OutlandOres.Count > 0)
             {
@@ -107,6 +109,8 @@ namespace WoWObjMgr
 
                 Thread.Sleep(3000);
                 Console.WriteLine(pos.OutlandOres.Count);
+
+                m.Attack();
             }
         }
 
@@ -118,7 +122,7 @@ namespace WoWObjMgr
             int index = -1;
 
             Point p = null;
-            Point player = t.GetPlayerPosition();
+            Point player = GameInfo.GetPlayerPos();
 
             for(int i = 0; i < pos.OutlandOres.Count; i++)
             {

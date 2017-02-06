@@ -32,6 +32,13 @@ namespace WoWObjMgr
             OutlandOres.Add(new Point(7240.261f, -2071.73f, -44f));
             OutlandOres.Add(new Point(7230.927f, -2141.189f, -112.7287f));
             OutlandOres.Add(new Point(7161.482f, -2316.789f, -13f));
+            OutlandOres.Add(new Point(6159.284f, -2279.569f, 59.979f));
+            OutlandOres.Add(new Point(6202.004f, -2232.468f, 48.37498f));
+            OutlandOres.Add(new Point(6191.431f, -2183.957f, 82f));
+            OutlandOres.Add(new Point(6357.212f, -2158.899f, 44.5f));
+            OutlandOres.Add(new Point(6355.891f, -2157.692f, 45f));
+            OutlandOres.Add(new Point(6337.947f, -2040.822f, 52.4f));
+            OutlandOres.Add(new Point(6123.702f, -2584.954f, 21.5f));
         }
 
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using WoWObjMgr.Getters;
 
 namespace WoWObjMgr
 {
@@ -12,30 +13,15 @@ namespace WoWObjMgr
     {       
         private ZoneLists zones;
         private Container cont;
-        private Keyboard keyboard;
-        private PlayerScan scan;
+        private Keyboard keyboard;      
 
         public Travel()
         {
             zones = new ZoneLists();
             cont = new Container();
             keyboard = new Keyboard();
-            scan = new PlayerScan();
         }
-
-        static void Main(string[] args)
-        {
-
-            new Mine();
-
-            Travel t = new Travel();
-           // t.Capture();
-            //t.TravelWalk("", 0);
-            //t.TravelFly("Shattrath");
-            //t.TravelFly("Dalaran");
-
-        }
-
+      
         [STAThread]
         public void TravelFly(string city) {
 
@@ -43,9 +29,7 @@ namespace WoWObjMgr
             float Rotation = 0.05f;
 
             Cities c = cont.getCity(city);
-
-            scan.Ping();
-                  
+               
             FixPitch();    
                 
             Lift(c.getZ());
@@ -77,9 +61,9 @@ namespace WoWObjMgr
         {
             keyboard.KeyDown((int)Keyboard.Keys.VK_SPACE);
 
-            while (scan.GetLocalPlayer().ZPos < z)
+            while (GameInfo.GetPlayerZ() < z)
             {
-                scan.Ping();
+
             }
 
             keyboard.KeyUp((int)Keyboard.Keys.VK_SPACE);
@@ -90,9 +74,8 @@ namespace WoWObjMgr
         {
             keyboard.KeyDown((int)Keyboard.Keys.VK_X);
 
-            while (scan.GetLocalPlayer().ZPos > z + 10f)
-            {
-                scan.Ping();
+            while (GameInfo.GetPlayerZ() > z + 10f)
+            {      
             }
 
             keyboard.KeyUp((int)Keyboard.Keys.VK_X);
@@ -103,7 +86,7 @@ namespace WoWObjMgr
         }
 
         //Rotate the character to point towards the target
-        private void Rotate(float a, float b, float c, Point p1, Point p2, float diff)
+        public void Rotate(float a, float b, float c, Point p1, Point p2, float diff)
         {
             a = Math.Abs(a);
             b = Math.Abs(b);
@@ -114,9 +97,7 @@ namespace WoWObjMgr
             float Pi = (float)Math.PI;
             float rotation = 0;
 
-            scan.Ping();
-
-            float rot = scan.GetLocalTarget().Rotation;
+            float rot = GameInfo.GetPlayerRot();
 
             if(p1.getX() < p2.getX() && p1.getY() < p2.getY())
             {
@@ -146,8 +127,7 @@ namespace WoWObjMgr
                 Thread.Sleep(10);
                 keyboard.KeyUp((int)Keyboard.Keys.VK_LEFT);
 
-                scan.Ping();
-                rot = scan.GetLocalPlayer().Rotation;
+                rot = GameInfo.GetPlayerRot();
             }
         }
 
@@ -170,9 +150,7 @@ namespace WoWObjMgr
         {
             while (true)
             {
-                scan.Ping();
-                WowObject obj = scan.GetLocalPlayer();
-                Console.WriteLine("X: " + obj.XPos + " Y: " + obj.YPos + " Z: " + obj.ZPos);
+                Console.WriteLine("X: " + GameInfo.GetPlayerX() + " Y: " + GameInfo.GetPlayerY() + " Z: " + GameInfo.GetPlayerZ());
             }
         }
 
@@ -180,13 +158,8 @@ namespace WoWObjMgr
         [STAThread]
         public float MoveToPoint(Point p, float Max_Distance, float rotate)
         {           
-
-            scan.Ping();
-
-            WowObject obj = scan.GetLocalPlayer();
-
-            float x = obj.XPos;
-            float y = obj.YPos;
+            float x = GameInfo.GetPlayerX();
+            float y = GameInfo.GetPlayerY();
 
             Point p1 = new Point(x, y);
             Point p2 = new Point(p.getX(), p.getY());
@@ -209,12 +182,8 @@ namespace WoWObjMgr
 
             while (true)
             {
-
-                scan.Ping();
-                obj = scan.GetLocalPlayer();
-
-                x = obj.XPos;
-                y = obj.YPos;
+                x = GameInfo.GetPlayerX();
+                y = GameInfo.GetPlayerY();
 
                 p1 = new Point(x, y);
                 p2 = new Point(p.getX(), p.getY());
@@ -277,12 +246,8 @@ namespace WoWObjMgr
             float min_distance = float.MaxValue;
             int index = -1;
 
-            scan.Ping();
-
-            WowObject obj = scan.GetLocalPlayer();
-
-            float x = obj.XPos;
-            float y = obj.YPos;
+            float x = GameInfo.GetPlayerX();
+            float y = GameInfo.GetPlayerY();
 
             Point p1 = new Point(x, y);
 
@@ -305,13 +270,9 @@ namespace WoWObjMgr
 
         //Returns the position of your character
         public Point GetPlayerPosition()
-        {
-            scan.Ping();
-
-            WowObject obj = scan.GetLocalPlayer();
-
-            float x = obj.XPos;
-            float y = obj.YPos;
+        { 
+            float x = GameInfo.GetPlayerX();
+            float y = GameInfo.GetPlayerY();
 
             Point p = new Point(x, y);
 

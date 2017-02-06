@@ -93,9 +93,7 @@ namespace WoWObjMgr
             LocalPlayer.Level = WowReader.ReadUInt32((IntPtr)(LocalPlayer.UnitFieldsAddress + UnitOffsets.Level));
             LocalPlayer.MaxEnergy = WowReader.ReadUInt32((IntPtr)(LocalPlayer.UnitFieldsAddress + UnitOffsets.MaxEnergy));
             LocalPlayer.Name = PlayerNameFromGuid(LocalPlayer.Guid);
-
-            WowReader.WriteFloat((IntPtr)(0x00CB9818), 3.21455f);
-
+        
             if (LocalPlayer.CurrentHealth <= 0) { LocalPlayer.isDead = true; }
 
             LocalTarget.Guid = WowReader.ReadUInt64((IntPtr)(ClientOffsets.LocalTargetGUID));
@@ -122,12 +120,16 @@ namespace WoWObjMgr
                     LocalTarget.Name = PlayerNameFromGuid(LocalTarget.Guid);
                 if (LocalTarget.CurrentHealth <= 0) { LocalTarget.isDead = true; }
                 //we don't add LocalTarget to the ArrayList because he or she will appear again later
+             //   if(LocalTarget.Name.Equals(""))
+                    
             }
 
             // read the object manager from first object to last.
             while (CurrentObject.BaseAddress != 0 && CurrentObject.BaseAddress % 2 == 0)
             {
                 CurrentObject.Type = (short)(WowReader.ReadUInt32((IntPtr)(CurrentObject.BaseAddress + ObjectOffsets.Type)));
+
+                
 
                 if (CurrentObject.Type == 4)
                 {
@@ -298,6 +300,11 @@ namespace WoWObjMgr
         public object Clone()
         {
             return new WowObject(Guid, SummonedBy, XPos, YPos, ZPos, Rotation, BaseAddress, UnitFieldsAddress, Type, Name, CurrentHealth, MaxHealth, CurrentEnergy, MaxEnergy, Level, isDead);
+        }
+
+        public bool hasFish()
+        {
+            return false;
         }
     }
 }

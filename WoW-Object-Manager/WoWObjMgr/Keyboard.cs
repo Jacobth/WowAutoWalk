@@ -31,6 +31,12 @@ namespace WoWObjMgr
             VK_LBUTTON = 0x1,
             VK_J = 0x4A,
             VK_0 = 0x30,
+            VK_1 = 0x31,
+            VK_2 = 0x32,
+            VK_3 = 0x33,
+            VK_4 = 0x34,
+            VK_5 = 0x35,
+            VK_TAB = 0x09,
         }
 
         public Keyboard()
