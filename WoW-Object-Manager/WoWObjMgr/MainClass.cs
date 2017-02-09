@@ -12,14 +12,14 @@ namespace WoWObjMgr
         static void Main(string[] args)
         {
 
-            new Mine();
+            //new Mine();
 
             //MageRotation mage = new MageRotation();
 
             Travel t = new Travel();
             //mage.Attack();
             //t.Capture();
-            //t.TravelWalk("", 0);
+            t.TravelWalk("", 0);
            // t.TravelFly("Shattrath");
             //t.TravelFly("Dalaran");
 

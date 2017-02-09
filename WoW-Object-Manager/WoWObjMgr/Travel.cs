@@ -25,7 +25,7 @@ namespace WoWObjMgr
         [STAThread]
         public void TravelFly(string city) {
 
-            float Min_Distance = 100;
+            float Min_Distance = 50f;
             float Rotation = 0.05f;
 
             Cities c = cont.getCity(city);
@@ -34,13 +34,18 @@ namespace WoWObjMgr
                 
             Lift(c.getZ());
 
-            float Current = MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation);
-            
-            if(Current > Min_Distance)
+            float distance = 0;
+
+            while (true)
             {
-                MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation);
+                distance = MoveToPoint(new Point(c.getX(), c.getY()), Min_Distance, Rotation);
+
+                if (distance <= Min_Distance)
+                {
+                    break;
+                }
             }
-                                                                          
+
         }
 
         //Calculate the distance between the target and the character
@@ -80,9 +85,7 @@ namespace WoWObjMgr
 
             keyboard.KeyUp((int)Keyboard.Keys.VK_X);
 
-            keyboard.KeyDown((int)Keyboard.Keys.VK_0);
-            Thread.Sleep(1);
-            keyboard.KeyUp((int)Keyboard.Keys.VK_0);
+            keyboard.KeyHold((int)Keyboard.Keys.VK_0, 1);
         }
 
         //Rotate the character to point towards the target
@@ -96,57 +99,128 @@ namespace WoWObjMgr
 
             float Pi = (float)Math.PI;
             float rotation = 0;
+            int target = 0;
 
             float rot = GameInfo.GetPlayerRot();
 
             if(p1.getX() < p2.getX() && p1.getY() < p2.getY())
             {
                 rotation = (Pi / 2) - angle;
+                target = 1;
                 Console.WriteLine("in 1");
             }
             else if(p1.getX() < p2.getX() && p1.getY() > p2.getY())
             {
                 rotation = Pi - ((Pi / 2) - angle);
+                target = 2;
                 Console.WriteLine("in 2");
             }
             else if(p1.getX() > p2.getX() && p1.getY() > p2.getY())
             {
                 rotation = Pi + (Pi/2) - angle;
+                target = 3;
                 Console.WriteLine("in 3" + " angle: " + angle);
             }
             else
             {
                 rotation = (3 * Pi / 2) + angle;
+                target = 4;
                 Console.WriteLine("in 4");
             }
 
+            int key = RotateDirection(rot, target);
+
             while(Math.Abs(rot - rotation) > diff)
             {
-               // Console.WriteLine(rotation + " difference: ");
-                keyboard.KeyDown((int)Keyboard.Keys.VK_LEFT);
-                Thread.Sleep(10);
-                keyboard.KeyUp((int)Keyboard.Keys.VK_LEFT);
+                keyboard.KeyHold(key, 10);
 
                 rot = GameInfo.GetPlayerRot();
             }
         }
 
+        /*Makes the roation more realistic, can turn 
+        both right or left depending on whats closest
+        to the desired angle.
+        */
+        private int RotateDirection(float rot, int target)
+        {
+            int key = -1;
+
+            float Pi = (float)Math.PI;
+
+            float first = 0;
+            float second = Pi / 2;
+            float third = Pi;
+            float fourth = 3 * Pi / 2;
+
+            if(target != 0)
+            {
+
+                if(rot > first && rot < second)
+                {
+                    if(target < 4)
+                    {
+                        key = (int)Keyboard.Keys.VK_LEFT;
+                    }
+                    else
+                    {
+                        key = (int)Keyboard.Keys.VK_RIGHT;
+                    }
+                }
+
+                else if(rot > second && rot < third)
+                {
+                    if(target == 1)
+                    {
+                        key = (int)Keyboard.Keys.VK_RIGHT;
+                    }
+
+                    else
+                    {
+                        key = (int)Keyboard.Keys.VK_LEFT;
+                    }
+                }
+
+                else if(rot > third && rot < fourth)
+                {
+                    if(target == 2)
+                    {
+                        key = (int)Keyboard.Keys.VK_RIGHT;
+                    }
+                    else
+                    {
+                        key = (int)Keyboard.Keys.VK_LEFT;
+                    }
+                }
+
+                else
+                {
+                    if(target == 3)
+                    {
+                        key = (int)Keyboard.Keys.VK_RIGHT;
+                    }
+                    else
+                    {
+                        key = (int)Keyboard.Keys.VK_LEFT;
+                    }
+                }
+
+            }
+
+            return key;
+        }
+
         //Adjust the pitch of the character before flying
         public void FixPitch()
         {
-            keyboard.KeyDown((int)Keyboard.Keys.VK_SPACE);
-            Thread.Sleep(1000);
-            keyboard.KeyUp((int)Keyboard.Keys.VK_SPACE);
-
-            keyboard.KeyDown((int)Keyboard.Keys.VK_X);
-            Thread.Sleep(1200);
-            keyboard.KeyUp((int)Keyboard.Keys.VK_X);
+            keyboard.KeyHold((int)Keyboard.Keys.VK_SPACE, 700);
+            keyboard.KeyHold((int)Keyboard.Keys.VK_X, 1200);
 
             Thread.Sleep(1000); 
         }
 
         //Helper method for capturing coordinates data
-        private void Capture()
+        public void Capture()
         {
             while (true)
             {
@@ -214,11 +288,11 @@ namespace WoWObjMgr
         public void TravelWalk(string city, int end)
         {
 
-            float rotate = 0.03f;
+            float rotate = 0.08f;
 
             int start = MoveToClosestNode();
 
-            float Max_Distance = 5f;
+            float Min_Distance = 2f;
 
             ZoneLists zones = new ZoneLists();
 
@@ -233,10 +307,26 @@ namespace WoWObjMgr
                 
             Thread.Sleep(500);
 
+            ThreadStart thread = new ThreadStart(JumpThread.CallJump);
+            Thread cThread = new Thread(thread);
+            cThread.Start();
+
             foreach (int i in path)
             {
-                MoveToPoint(zones.Dm[i], Max_Distance, rotate);              
+                float distance = 0;
+
+                while (true)
+                {
+                    distance = MoveToPoint(zones.Dm[i], Min_Distance, rotate);
+
+                    if (distance <= Min_Distance)
+                    {
+                        break;
+                    }
+                }             
             }
+
+            cThread.Abort();
         }
 
         //Helper method to walk to the closes node in the road netwrok
@@ -268,23 +358,10 @@ namespace WoWObjMgr
             return index;
         }
 
-        //Returns the position of your character
-        public Point GetPlayerPosition()
-        { 
-            float x = GameInfo.GetPlayerX();
-            float y = GameInfo.GetPlayerY();
-
-            Point p = new Point(x, y);
-
-            return p;
-        }
-
         //Mount you character, set your mount on actionbar with keybind 0
         public void Mount()
         {
-            keyboard.KeyDown((int)Keyboard.Keys.VK_0);
-            Thread.Sleep(1);
-            keyboard.KeyUp((int)Keyboard.Keys.VK_0);
+            keyboard.KeyClick((int)Keyboard.Keys.VK_0);      
             Thread.Sleep(2000);
         }
     }

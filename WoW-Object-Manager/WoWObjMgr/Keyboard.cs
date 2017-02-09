@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 
 namespace WoWObjMgr
 {
@@ -53,6 +54,20 @@ namespace WoWObjMgr
         public void KeyUp(int key)
         {
             PostMessage(p.MainWindowHandle, WM_KEYUP, key, 0);
+        }
+
+        public void KeyClick(int key)
+        {
+            KeyDown(key);
+            Thread.Sleep(10);
+            KeyUp(key);
+        }
+
+        public void KeyHold(int key, int time)
+        {
+            KeyDown(key);
+            Thread.Sleep(time);
+            KeyUp(key);
         }
 
     }

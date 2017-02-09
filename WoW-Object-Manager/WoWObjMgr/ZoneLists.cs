@@ -39,6 +39,15 @@ namespace WoWObjMgr
             Dm.Add(new Point(-495.5587f, -5528.292f));  //14
             Dm.Add(new Point(-477.8983f, -5550.292f));  //15
             Dm.Add(new Point(-482.9684f, -5602.179f));  //16
+            Dm.Add(new Point(-513f, -5752f));  //17
+            Dm.Add(new Point(-510f, -5834f));  //18
+            Dm.Add(new Point(-470f, -5910f));  //19
+            Dm.Add(new Point(-407f, -5966f));  //20
+            Dm.Add(new Point(-349f, -5996f));  //21
+            Dm.Add(new Point(-260f, -6012f));  //22
+            Dm.Add(new Point(-99f, -5951f));  //23
+            Dm.Add(new Point(-52f, -5927f));  //24
+            Dm.Add(new Point(-34f, -5907f));  //25
 
             Dun_Morogh.add_vertex(0, new Dictionary<int, int> { { 1, 1 } });
             Dun_Morogh.add_vertex(1, new Dictionary<int, int> { { 0, 1 }, { 2, 1 } });
@@ -56,7 +65,18 @@ namespace WoWObjMgr
             Dun_Morogh.add_vertex(13, new Dictionary<int, int> { { 12, 1 }, { 14, 1 } });
             Dun_Morogh.add_vertex(14, new Dictionary<int, int> { { 13, 1 }, { 15, 1 } });
             Dun_Morogh.add_vertex(15, new Dictionary<int, int> { { 14, 1 }, { 16, 1 } });
-            Dun_Morogh.add_vertex(16, new Dictionary<int, int> { { 15, 1 } });
+            Dun_Morogh.add_vertex(16, new Dictionary<int, int> { { 15, 1 }, { 17, 1 } });
+            Dun_Morogh.add_vertex(17, new Dictionary<int, int> { { 16, 1 }, { 18, 1 } });
+            Dun_Morogh.add_vertex(18, new Dictionary<int, int> { { 17, 1 }, { 19, 1 } });
+            Dun_Morogh.add_vertex(19, new Dictionary<int, int> { { 18, 1 }, { 20, 1 } });
+            Dun_Morogh.add_vertex(20, new Dictionary<int, int> { { 19, 1 }, { 21, 1 } });
+            Dun_Morogh.add_vertex(21, new Dictionary<int, int> { { 20, 1 }, { 22, 1 } });
+            Dun_Morogh.add_vertex(22, new Dictionary<int, int> { { 21, 1 }, { 23, 1 } });
+            Dun_Morogh.add_vertex(23, new Dictionary<int, int> { { 22, 1 }, { 24, 1 } });
+            Dun_Morogh.add_vertex(24, new Dictionary<int, int> { { 23, 1 }, { 25, 1 } });
+
+            //Sista
+            Dun_Morogh.add_vertex(25, new Dictionary<int, int> { { 24, 1 } });
         }
 
     }

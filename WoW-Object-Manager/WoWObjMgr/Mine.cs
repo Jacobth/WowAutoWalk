@@ -52,23 +52,22 @@ namespace WoWObjMgr
             p.x = Convert.ToInt16(width / 2 + width);
             p.y = Convert.ToInt16(height / 2);
 
-            keyboard.KeyDown((int)Keyboard.Keys.VK_LBUTTON);
-            Thread.Sleep(1);
-            keyboard.KeyUp((int)Keyboard.Keys.VK_LBUTTON);
+            keyboard.KeyHold((int)Keyboard.Keys.VK_LBUTTON, 1);
 
-            for (int y = -200; y <= 200; y += 10)
+            int range = height / 5;
+            int inc = 5;
+
+            for (int y = -range; y <= range; y += inc)
             {
-                for (int x = -200; x <= 200; x += 10)
+                for (int x = -range; x <= range; x += inc)
                 {
                     int xTmp = Convert.ToInt16(x);
                     int yTmp = Convert.ToInt16(y);
 
                     SetCursorPos(p.x + xTmp, p.y + yTmp);
-
                     Thread.Sleep(1);
 
-                    keyboard.KeyDown((int)Keyboard.Keys.VK_J);
-                    keyboard.KeyUp((int)Keyboard.Keys.VK_J);
+                    keyboard.KeyHold((int)Keyboard.Keys.VK_J, 0);
                 }
             }
         }
