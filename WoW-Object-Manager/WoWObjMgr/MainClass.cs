@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using WoWObjMgr.Classes;
+using WoWObjMgr.Getters;
+using WoWObjMgr.Utilities;
 
 namespace WoWObjMgr
 {
@@ -12,14 +16,26 @@ namespace WoWObjMgr
         static void Main(string[] args)
         {
 
-            //new Mine();
+            Mine m = new Mine();
 
             //MageRotation mage = new MageRotation();
 
-            Travel t = new Travel();
+            OreLists o = new OreLists();
+
+            /*  while(true)
+              {
+                  Console.WriteLine(GameInfo.GetMapId() + " z: " + GameInfo.GetPlayerZ());
+              }*/
+
+            Rotation mage = new MageRotate();
+
+            m.GatherOres(o.GetFelIron(), mage);
+
+        //    Travel t = new Travel();
             //mage.Attack();
-            //t.Capture();
-            t.TravelWalk("", 0);
+           // t.Capture();
+        //    t.TravelWalk("ironforge");
+           // t.click();
            // t.TravelFly("Shattrath");
             //t.TravelFly("Dalaran");
 

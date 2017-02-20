@@ -8,8 +8,8 @@
     <ProjectGuid>{F3C0AB44-D268-4FE3-89FD-D86CBA4E79ED}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WoWObjMgr</RootNamespace>
-    <AssemblyName>WoWObjMgr</AssemblyName>
+    <RootNamespace>WowAuto</RootNamespace>
+    <AssemblyName>WowAuto</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -17,6 +17,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,10 +31,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -119,21 +119,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cities.cs" />
+    <Compile Include="Classes\Rotation.cs" />
+    <Compile Include="Getters\ZoneInfo.cs" />
+    <Compile Include="Objects\Cities.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="Getters\GameInfo.cs" />
-    <Compile Include="JumpThread.cs" />
-    <Compile Include="Keyboard.cs" />
-    <Compile Include="MageRotation.cs" />
+    <Compile Include="Threads\JumpThread.cs" />
+    <Compile Include="Threads\MouseThread.cs" />
+    <Compile Include="Threads\StuckThread.cs" />
+    <Compile Include="Utilities\FileReader.cs" />
+    <Compile Include="Utilities\Keyboard.cs" />
+    <Compile Include="Classes\MageRotate.cs" />
     <Compile Include="MainClass.cs" />
     <Compile Include="Mine.cs" />
-    <Compile Include="OrePositions.cs" />
-    <Compile Include="PlayerScan.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Utilities\MouseClick.cs" />
+    <Compile Include="Getters\OreLists.cs" />
+    <Compile Include="Getters\PlayerScan.cs" />
+    <Compile Include="Objects\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShortestPath.cs" />
+    <Compile Include="Utilities\ShortestPath.cs" />
     <Compile Include="Travel.cs" />
-    <Compile Include="ZoneLists.cs" />
+    <Compile Include="Getters\ZoneLists.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -146,6 +152,19 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Positions\adamantite.txt" />
+    <Content Include="Positions\cobalt.txt" />
+    <Content Include="Positions\fel_iron.txt" />
+    <Content Include="Positions\khorium.txt" />
+    <Content Include="Positions\nethercite.txt" />
+    <Content Include="Positions\rich_adamantite.txt" />
+    <Content Include="Positions\rich_cobalt.txt" />
+    <Content Include="Positions\rich_saronite.txt" />
+    <Content Include="Positions\saronite.txt" />
+    <Content Include="Positions\titanium.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

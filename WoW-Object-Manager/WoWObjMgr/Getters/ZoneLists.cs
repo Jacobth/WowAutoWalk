@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WoWObjMgr
+namespace WoWObjMgr.Getters
 {
     class ZoneLists
     {
 
         public ShortestPath Dun_Morogh = new ShortestPath();
+        public ShortestPath Eversong_Woods = new ShortestPath();
 
         public List<Point> Dm = new List<Point>();
         public List<Point> Ew = new List<Point>();
+
+        public Dictionary<string, int> Dun_Morogh_Map = new Dictionary<string, int>();
+
+        public Dictionary<string, ShortestPath> pathList = new Dictionary<string, ShortestPath>();
+        public Dictionary<string, List<Point>> pointList = new Dictionary<string, List<Point>>();
 
         public ZoneLists()
         {
@@ -49,6 +55,9 @@ namespace WoWObjMgr
             Dm.Add(new Point(-52f, -5927f));  //24
             Dm.Add(new Point(-34f, -5907f));  //25
 
+            Dun_Morogh_Map.Add("ironforge", 0);
+           // Dun_Morogh_Map.Add("");
+
             Dun_Morogh.add_vertex(0, new Dictionary<int, int> { { 1, 1 } });
             Dun_Morogh.add_vertex(1, new Dictionary<int, int> { { 0, 1 }, { 2, 1 } });
             Dun_Morogh.add_vertex(2, new Dictionary<int, int> { { 1, 1 }, { 3, 1 } });
@@ -77,6 +86,21 @@ namespace WoWObjMgr
 
             //Sista
             Dun_Morogh.add_vertex(25, new Dictionary<int, int> { { 24, 1 } });
+
+            //Eversong Woods
+            Ew.Add(new Point(-6346.082f, 10350.8f));//0
+            Ew.Add(new Point(-6329.172f, 10092.21f));//1
+            Ew.Add(new Point(-6455.539f, 10007.71f));//2
+            Ew.Add(new Point(-6516.314f, 9946.403f));//3
+            Ew.Add(new Point(-6598f, 9788f));//4
+            Ew.Add(new Point(-6731f, 9575f));//5
+
+            Eversong_Woods.add_vertex(0, new Dictionary<int, int> { { 1, 1 } });
+            Eversong_Woods.add_vertex(1, new Dictionary<int, int> { { 0, 1 }, { 2, 1 } });
+            Eversong_Woods.add_vertex(2, new Dictionary<int, int> { { 1, 1 }, { 3, 1 } });
+            Eversong_Woods.add_vertex(3, new Dictionary<int, int> { { 2, 1 }, { 4, 1 } });
+            Eversong_Woods.add_vertex(4, new Dictionary<int, int> { { 3, 1 }, { 5, 1 } });
+            Eversong_Woods.add_vertex(5, new Dictionary<int, int> { { 4, 1 } });
         }
 
     }

@@ -19,11 +19,15 @@ namespace WoWObjMgr
 
                 while (true)
                 {
+
+                    Random rnd = new Random();
+                    int time = rnd.Next(1, 6);
+
                     int key = (int)Keyboard.Keys.VK_SPACE;
 
                     keyboard.KeyHold(key, 10);
 
-                    Thread.Sleep(10000);
+                    Thread.Sleep(time);
                 }
             }
 

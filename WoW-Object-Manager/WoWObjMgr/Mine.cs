@@ -6,7 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using WoWObjMgr.Classes;
 using WoWObjMgr.Getters;
+using WoWObjMgr.Threads;
 
 namespace WoWObjMgr
 {
@@ -14,7 +16,7 @@ namespace WoWObjMgr
     {
 
         private Keyboard keyboard;
-        private OrePositions pos;
+        private OreLists pos;
 
         [DllImport("User32.Dll")]
         public static extern long SetCursorPos(int x, int y);
@@ -32,15 +34,14 @@ namespace WoWObjMgr
         public Mine()
         {
             keyboard = new Keyboard();
-            pos = new OrePositions();
-
-            gatherOutlandOres();
-           // clickOre();
+            pos = new OreLists();
+       //     SetMiningView();
+         //   ClickOre();
         }
 
         //Method to gather the ore, scan the screen until you hit the ore
         [STAThread]
-        private void clickOre()
+        private void ClickOre()
         {           
             int width = Screen.PrimaryScreen.Bounds.Width;
             int height = Screen.PrimaryScreen.Bounds.Height;
@@ -52,10 +53,10 @@ namespace WoWObjMgr
             p.x = Convert.ToInt16(width / 2 + width);
             p.y = Convert.ToInt16(height / 2);
 
-            keyboard.KeyHold((int)Keyboard.Keys.VK_LBUTTON, 1);
+      //      keyboard.KeyHold((int)Keyboard.Keys.VK_LBUTTON, 1);
 
-            int range = height / 5;
-            int inc = 5;
+            int range = height / 8;
+            int inc = 30;
 
             for (int y = -range; y <= range; y += inc)
             {
@@ -65,31 +66,31 @@ namespace WoWObjMgr
                     int yTmp = Convert.ToInt16(y);
 
                     SetCursorPos(p.x + xTmp, p.y + yTmp);
-                    Thread.Sleep(1);
+                    Thread.Sleep(5);
 
-                    keyboard.KeyHold((int)Keyboard.Keys.VK_J, 0);
+                    //  keyboard.KeyHold((int)Keyboard.Keys.VK_RBUTTON, 0);
+                    MouseClick.RightMouseClick();
                 }
             }
+            Thread.Sleep(2000);
         }
 
-        //Call this to gather all ores in outland
-        public void gatherOutlandOres()
+        //Call this to gather all ores in specified area
+        public void GatherOres(List<Point> ores, Rotation rotation)
         {
             Travel t = new Travel();
-            MageRotation m = new MageRotation();
 
-            while (pos.OutlandOres.Count > 0)
+            while (ores.Count > 0)
             {
-
-                float Max_Z = 550f;
+               
                 float Min_Distance = 2f;
 
                 t.Mount();
-                t.FixPitch();
+                float Max_Z = 550f;
                 t.Lift(Max_Z);
 
-                Point dest = getClosest(t);
-
+                Point dest = GetClosest(t, ores);
+              
                 float distance = 0;
 
                 while (true)
@@ -104,17 +105,17 @@ namespace WoWObjMgr
 
                 t.Land(dest.getZ());
               
-                clickOre();
+                ClickOre();
 
                 Thread.Sleep(3000);
-                Console.WriteLine(pos.OutlandOres.Count);
+                Console.WriteLine(ores.Count);
 
-                m.Attack();
+                rotation.Attack();
             }
         }
 
         //Helper method to get the closest ore to the player
-        private Point getClosest(Travel t)
+        private Point GetClosest(Travel t, List<Point> ores)
         {
             float Min_Distance = float.MaxValue;
 
@@ -123,9 +124,9 @@ namespace WoWObjMgr
             Point p = null;
             Point player = GameInfo.GetPlayerPos();
 
-            for(int i = 0; i < pos.OutlandOres.Count; i++)
+            for(int i = 0; i < ores.Count; i++)
             {
-                Point dest = pos.OutlandOres[i];
+                Point dest = ores[i];
                 float distance = t.GetDistance(player, dest);
 
                 if(distance < Min_Distance)
@@ -137,9 +138,51 @@ namespace WoWObjMgr
                 }
             }
 
-            pos.OutlandOres.RemoveAt(index);
+            ores.RemoveAt(index);
 
             return p;
+        }
+
+        private void SetMiningView()
+        {
+            int width = Screen.PrimaryScreen.Bounds.Width;
+            int height = Screen.PrimaryScreen.Bounds.Height;
+
+            Console.WriteLine("width: " + width + " height: " + height);
+
+            POINT p = new POINT();
+            //Dual screen will affect this, if single screen remove + width
+            p.x = Convert.ToInt16(width / 2 + width);
+            p.y = Convert.ToInt16(height / 4);
+
+            int range = height / 8;
+            int inc = 5;
+
+            ThreadStart thread = new ThreadStart(MouseThread.CallClick);
+            Thread cThread = new Thread(thread);
+            cThread.Start();
+
+            for (int y = -range; y <= range; y += inc)
+            {
+                int yTmp = Convert.ToInt16(y);
+
+                SetCursorPos(p.x, p.y + yTmp);
+                Thread.Sleep(100);
+            }
+
+            cThread.Abort();
+        }
+
+        private float GetMaxZ(Point p)
+        {
+            if(p.getZ() > 600f)
+            {
+                return 1200f;
+            }
+            else
+            {
+                return 550f;
+            }
         }
     }
 }

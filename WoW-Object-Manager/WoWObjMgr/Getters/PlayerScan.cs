@@ -16,7 +16,6 @@ namespace WoWObjMgr
         uint FirstObject = 0;
 
         //Offsets for 3.3.5 build 12340
-        //Thanks to MMOwned.com users
 
         public enum ClientOffsets : uint
         {
@@ -27,6 +26,7 @@ namespace WoWObjMgr
             NextObjectOffset = 0x3C,
             LocalPlayerGUID = 0xBD07A8,
             LocalTargetGUID = 0x00BD07B0,
+            MapId = 0x0BD080C
         }
 
         public enum NameOffsets : ulong
@@ -45,7 +45,7 @@ namespace WoWObjMgr
             Pos_Z = 0x7A0,
             Rot = 0x7A8,
             Guid = 0x30,
-            UnitFields = 0x8
+            UnitFields = 0x8,
         }
 
         enum UnitOffsets : uint
@@ -79,12 +79,11 @@ namespace WoWObjMgr
         {
             CurrentPlayers.Clear();
 
-            CurrentObject.BaseAddress = FirstObject;
-            
-            LocalPlayer.BaseAddress = GetObjectBaseByGuid(LocalPlayer.Guid);             
+            CurrentObject.BaseAddress = FirstObject;           
+            LocalPlayer.BaseAddress = GetObjectBaseByGuid(LocalPlayer.Guid);                
             LocalPlayer.XPos = WowReader.ReadFloat((IntPtr)(LocalPlayer.BaseAddress + ObjectOffsets.Pos_X));
             LocalPlayer.YPos = WowReader.ReadFloat((IntPtr)(LocalPlayer.BaseAddress + ObjectOffsets.Pos_Y));
-            LocalPlayer.ZPos = WowReader.ReadFloat((IntPtr)(LocalPlayer.BaseAddress + ObjectOffsets.Pos_Z));
+            LocalPlayer.ZPos = WowReader.ReadFloat((IntPtr)(LocalPlayer.BaseAddress + ObjectOffsets.Pos_Z));        
             LocalPlayer.Rotation = WowReader.ReadFloat((IntPtr)(LocalPlayer.BaseAddress + ObjectOffsets.Rot));
             LocalPlayer.UnitFieldsAddress = WowReader.ReadUInt32((IntPtr)(LocalPlayer.BaseAddress + ObjectOffsets.UnitFields));
             LocalPlayer.CurrentHealth = WowReader.ReadUInt32((IntPtr)(LocalPlayer.UnitFieldsAddress + UnitOffsets.Health));
@@ -93,7 +92,8 @@ namespace WoWObjMgr
             LocalPlayer.Level = WowReader.ReadUInt32((IntPtr)(LocalPlayer.UnitFieldsAddress + UnitOffsets.Level));
             LocalPlayer.MaxEnergy = WowReader.ReadUInt32((IntPtr)(LocalPlayer.UnitFieldsAddress + UnitOffsets.MaxEnergy));
             LocalPlayer.Name = PlayerNameFromGuid(LocalPlayer.Guid);
-        
+            LocalPlayer.MapId = WowReader.ReadInt((IntPtr)(ClientOffsets.MapId));
+
             if (LocalPlayer.CurrentHealth <= 0) { LocalPlayer.isDead = true; }
 
             LocalTarget.Guid = WowReader.ReadUInt64((IntPtr)(ClientOffsets.LocalTargetGUID));
@@ -262,6 +262,7 @@ namespace WoWObjMgr
         public uint UnitFieldsAddress = 0;
         public short Type = 0;
         public String Name = "";
+        public int MapId = 0;
 
         // more specialised properties (player or mob)
         public uint CurrentHealth = 0;
@@ -276,7 +277,7 @@ namespace WoWObjMgr
         {
         }
 
-        public WowObject(ulong cGuid, ulong cSummonedBy, float cXPos, float cYPos, float cZPos, float cRotation, uint cBaseAddress, uint cUnitFieldsAddress, short cType, String cName, uint cCurrentHealth, uint cMaxHealth, uint cCurrentEnergy, uint cMaxEnergy, uint cLevel, bool cisDead)
+        public WowObject(ulong cGuid, ulong cSummonedBy, float cXPos, float cYPos, float cZPos, float cRotation, uint cBaseAddress, uint cUnitFieldsAddress, short cType, String cName, uint cCurrentHealth, uint cMaxHealth, uint cCurrentEnergy, uint cMaxEnergy, uint cLevel, bool cisDead, int cMapId)
         {
             Guid = cGuid;
             SummonedBy = cSummonedBy;
@@ -293,18 +294,14 @@ namespace WoWObjMgr
             CurrentEnergy = cCurrentEnergy;
             MaxEnergy = cMaxEnergy;
             Level = cLevel;
+            MapId = cMapId;
 
             isDead = cisDead;
         }
 
         public object Clone()
         {
-            return new WowObject(Guid, SummonedBy, XPos, YPos, ZPos, Rotation, BaseAddress, UnitFieldsAddress, Type, Name, CurrentHealth, MaxHealth, CurrentEnergy, MaxEnergy, Level, isDead);
-        }
-
-        public bool hasFish()
-        {
-            return false;
+            return new WowObject(Guid, SummonedBy, XPos, YPos, ZPos, Rotation, BaseAddress, UnitFieldsAddress, Type, Name, CurrentHealth, MaxHealth, CurrentEnergy, MaxEnergy, Level, isDead, MapId);
         }
     }
 }

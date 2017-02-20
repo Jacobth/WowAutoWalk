@@ -110,5 +110,15 @@ namespace WoWObjMgr.Getters
             return obj.isDead;
         }
 
+        public static int GetMapId()
+        {
+            PlayerScan scan = new PlayerScan();
+
+            scan.Ping();
+
+            WowObject obj = scan.GetLocalPlayer();
+
+            return obj.MapId;
+        }
     }
 }
