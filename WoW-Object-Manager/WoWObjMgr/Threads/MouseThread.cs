@@ -12,9 +12,7 @@ namespace WoWObjMgr.Threads
         public static void CallClick()
         {
             try
-            {
-                Console.WriteLine("Child thread starts");
-              
+            {         
                 while (true)
                 {
 
@@ -29,12 +27,10 @@ namespace WoWObjMgr.Threads
 
             catch (ThreadAbortException e)
             {
-                Console.WriteLine("Thread Abort Exception");
                 MouseClick.LeftMouseRelease();
             }
             finally
             {
-                Console.WriteLine("Couldn't catch the Thread Exception");
             }
 
         }

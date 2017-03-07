@@ -16,7 +16,7 @@ namespace WoWObjMgr
         private Container cont;
         private Keyboard keyboard;
 
-        private const float DROP_DISTANCE = 8f;
+        private const float DROP_DISTANCE = 6f;
 
         public static bool isMoving = true;
 
@@ -90,17 +90,20 @@ namespace WoWObjMgr
         }
 
         //Land on the ground and dismount
-        public void Land(float z)
+        public bool Land(float z)
         {
             keyboard.KeyDown((int)Keyboard.Keys.VK_X);
 
             Thread t = new Thread(() => StuckThread.CallStuck(0));
             t.Start();
 
+            bool isLanding = true;
+
             while (GameInfo.GetPlayerZ() > z + DROP_DISTANCE)
             {
                 if (!isMoving)
                 {
+                    isLanding = false;
                     isMoving = true;
                     t.Abort();
                     break;
@@ -111,9 +114,14 @@ namespace WoWObjMgr
 
             keyboard.KeyUp((int)Keyboard.Keys.VK_X);
 
-            keyboard.KeyHold((int)Keyboard.Keys.VK_0, 1);
+            if (isLanding)
+            {
+                keyboard.KeyHold((int)Keyboard.Keys.VK_0, 1);
+            }
 
             Thread.Sleep(1500);
+
+            return isLanding;
         }
 
         //Rotate the character to point towards the target
@@ -201,11 +209,11 @@ namespace WoWObjMgr
                 {
                     if(target < 4)
                     {
-                        key = (int)Keyboard.Keys.VK_LEFT;
+                        key = left;
                     }
                     else
                     {
-                        key = (int)Keyboard.Keys.VK_RIGHT;
+                        key = right;
                     }
                 }
 
@@ -213,12 +221,12 @@ namespace WoWObjMgr
                 {
                     if(target == 1)
                     {
-                        key = (int)Keyboard.Keys.VK_RIGHT;
+                        key = right;
                     }
 
                     else
                     {
-                        key = (int)Keyboard.Keys.VK_LEFT;
+                        key = left;
                     }
                 }
 
@@ -226,11 +234,11 @@ namespace WoWObjMgr
                 {
                     if(target == 2)
                     {
-                        key = (int)Keyboard.Keys.VK_RIGHT;
+                        key = right;
                     }
                     else
                     {
-                        key = (int)Keyboard.Keys.VK_LEFT;
+                        key = left;
                     }
                 }
 
@@ -238,11 +246,11 @@ namespace WoWObjMgr
                 {
                     if(target == 3)
                     {
-                        key = (int)Keyboard.Keys.VK_RIGHT;
+                        key = right;
                     }
                     else
                     {
-                        key = (int)Keyboard.Keys.VK_LEFT;
+                        key = left;
                     }
                 }
 
@@ -344,7 +352,7 @@ namespace WoWObjMgr
             float Min_Distance = 2f;
 
          //   Cities c = cont.getCity(city);
-            List<int> path = zones.Eversong_Woods.shortest_path(start, end);
+            List<int> path = zones.Dun_Morogh.shortest_path(start, end);
             path.Reverse();
 
             foreach (int i in path)
@@ -364,7 +372,7 @@ namespace WoWObjMgr
 
                 while (true)
                 {
-                    distance = MoveToPoint(zones.Ew[i], Min_Distance, rotate);
+                    distance = MoveToPoint(zones.Dm[i], Min_Distance, rotate);
 
                     if (distance <= Min_Distance)
                     {
@@ -388,9 +396,9 @@ namespace WoWObjMgr
 
             Point p1 = GameInfo.GetPlayerPos();
 
-            for (int i = 0; i < zones.Ew.Count; i++) 
+            for (int i = 0; i < zones.Dm.Count; i++) 
             {
-                float distance = GetDistance(p1, zones.Ew[i]);
+                float distance = GetDistance(p1, zones.Dm[i]);
 
                 if(distance < min_distance)
                 {
@@ -399,7 +407,7 @@ namespace WoWObjMgr
                 }
             }
 
-            Point p = zones.Ew[index];
+            Point p = zones.Dm[index];
             MoveToPoint(p, 5f, rotate);
 
             cThread.Abort();

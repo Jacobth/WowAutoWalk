@@ -44,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <RegisterForComInterop>false</RegisterForComInterop>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -128,6 +129,7 @@
     <Compile Include="Threads\MouseThread.cs" />
     <Compile Include="Threads\StuckThread.cs" />
     <Compile Include="Utilities\FileReader.cs" />
+    <Compile Include="Utilities\ImageColor.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="Classes\MageRotate.cs" />
     <Compile Include="MainClass.cs" />
@@ -155,16 +157,16 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Positions\adamantite.txt" />
-    <Content Include="Positions\cobalt.txt" />
-    <Content Include="Positions\fel_iron.txt" />
-    <Content Include="Positions\khorium.txt" />
-    <Content Include="Positions\nethercite.txt" />
-    <Content Include="Positions\rich_adamantite.txt" />
-    <Content Include="Positions\rich_cobalt.txt" />
-    <Content Include="Positions\rich_saronite.txt" />
-    <Content Include="Positions\saronite.txt" />
-    <Content Include="Positions\titanium.txt" />
+    <Content Include="Ores\adamantite.txt" />
+    <Content Include="Ores\cobalt.txt" />
+    <Content Include="Ores\fel_iron.txt" />
+    <Content Include="Ores\khorium.txt" />
+    <Content Include="Ores\nethercite.txt" />
+    <Content Include="Ores\rich_adamantite.txt" />
+    <Content Include="Ores\rich_cobalt.txt" />
+    <Content Include="Ores\rich_saronite.txt" />
+    <Content Include="Ores\saronite.txt" />
+    <Content Include="Ores\titanium.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

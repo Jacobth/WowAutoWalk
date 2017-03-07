@@ -16,7 +16,7 @@ namespace WoWObjMgr.Utilities
             string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
 
             const Int32 BufferSize = 128;
-            using (var fileStream = File.OpenRead(path + "\\Positions\\" + file))
+            using (var fileStream = File.OpenRead(path + "\\Ores\\" + file))
 
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
             {
@@ -28,7 +28,7 @@ namespace WoWObjMgr.Utilities
                     Point p = getPoint(pos);
                     list.Add(p);
 
-                    Console.WriteLine("x: " + p.getX() + " y: " + p.getY() + " z: " + p.getZ());
+                   // Console.WriteLine("x: " + p.getX() + " y: " + p.getY() + " z: " + p.getZ());
                 }
             }
 

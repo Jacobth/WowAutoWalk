@@ -13,8 +13,6 @@ namespace WoWObjMgr
         {
             try
             {
-                Console.WriteLine("Child thread starts");
-
                 Keyboard keyboard = new Keyboard();
 
                 while (true)
@@ -27,17 +25,15 @@ namespace WoWObjMgr
 
                     keyboard.KeyHold(key, 10);
 
-                    Thread.Sleep(time);
+                    Thread.Sleep(time * 1000);
                 }
             }
 
             catch (ThreadAbortException e)
             {
-                Console.WriteLine("Thread Abort Exception");
             }
             finally
             {
-                Console.WriteLine("Couldn't catch the Thread Exception");
             }
 
         }

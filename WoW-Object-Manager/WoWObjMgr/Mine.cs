@@ -46,7 +46,7 @@ namespace WoWObjMgr
             int width = Screen.PrimaryScreen.Bounds.Width;
             int height = Screen.PrimaryScreen.Bounds.Height;
 
-            Console.WriteLine("width: " + width + " height: " + height);
+        //    Console.WriteLine("width: " + width + " height: " + height);
 
             POINT p = new POINT();
             //Dual screen will affect this, if single screen remove + width
@@ -79,13 +79,19 @@ namespace WoWObjMgr
         public void GatherOres(List<Point> ores, Rotation rotation)
         {
             Travel t = new Travel();
+            bool landed = true;
 
             while (ores.Count > 0)
             {
                
                 float Min_Distance = 2f;
 
-                t.Mount();
+                if(landed)
+                {
+                    t.Mount();                  
+                }
+                landed = true;
+
                 float Max_Z = 550f;
                 t.Lift(Max_Z);
 
@@ -103,7 +109,7 @@ namespace WoWObjMgr
                     }
                 }
 
-                t.Land(dest.getZ());
+                landed = t.Land(dest.getZ());
               
                 ClickOre();
 
@@ -111,6 +117,8 @@ namespace WoWObjMgr
                 Console.WriteLine(ores.Count);
 
                 rotation.Attack();
+                ClickOre();
+                Thread.Sleep(3000);
             }
         }
 

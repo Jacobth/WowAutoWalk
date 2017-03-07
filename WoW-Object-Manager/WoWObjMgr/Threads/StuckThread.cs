@@ -46,11 +46,9 @@ namespace WoWObjMgr.Threads
 
             catch (ThreadAbortException e)
             {
-                Console.WriteLine("Thread Abort Exception");
             }
             finally
             {
-                Console.WriteLine("Couldn't catch the Thread Exception");
             }
 
         }

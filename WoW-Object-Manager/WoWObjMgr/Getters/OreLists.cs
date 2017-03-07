@@ -64,6 +64,54 @@ namespace WoWObjMgr.Getters
             return allOres;
         }
 
+        public List<Point> MineMap(string name)
+        {
+            Dictionary<string, List<Point>> map = new Dictionary<string, List<Point>>();
+
+            map["cobalt"] = GetCobalt();
+            map["rich_cobalt"] = GetRichCobalt();
+            map["saronite"] = GetSaronite();
+            map["rich_saronite"] = GetRichSaronite();
+            map["titanium"] = GetTitanium();
+
+            map["adamantite"] = GetAdamantite();
+            map["rich_adamantite"] = GetRichAdamantite();
+            map["fel_iron"] = GetFelIron();
+            map["khorium"] = GetKhorium();
+            map["nethercite"] = GetNethercite();
+
+            if(!map.ContainsKey(name))
+            {
+                return new List<Point>();
+            }
+
+            return map[name];
+        }
+
+        public int MineZone(string name)
+        {
+            Dictionary<string, int> map = new Dictionary<string, int>();
+
+            map["adamantite"] = 0;
+            map["rich_adamantite"] = 0;
+            map["fel_iron"] = 0;
+            map["khorium"] = 0;
+            map["nethercite"] = 0;
+
+            map["cobalt"] = 1;
+            map["rich_cobalt"] = 1;
+            map["saronite"] = 1;
+            map["rich_saronite"] = 1;
+            map["titanium"] = 1;
+
+            if(!map.ContainsKey(name))
+            {
+                return -1;
+            }
+
+            return map[name];
+        }
+
         public List<Point> GetAdamantite()
         {
             List<Point> list = FileReader.ReadFile("adamantite.txt");
